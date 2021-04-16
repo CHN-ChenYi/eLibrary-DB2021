@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/sirupsen/logrus"
@@ -9,6 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
+var ErrNoRowsAffected = errors.New("no rows affected")
 var gormDb *gorm.DB
 
 func getDatabaseLoginInfo() string {
@@ -43,6 +45,8 @@ func AutoMigrate() {
 	}
 	err := gormDb.AutoMigrate(
 		&Book{},
+		&Card{},
+		&Borrow{},
 	)
 	if err != nil {
 		logrus.Fatal(err)
