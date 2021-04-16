@@ -5,10 +5,10 @@ import (
 )
 
 type Borrow struct {
-	ID         uint `gorm:"not null;autoIncrement;primaryKey"`
-	BookID     uint `gorm:"not null"`
+	ID         uint   `gorm:"not null;autoIncrement;primaryKey"`
+	BookID     string `gorm:"not null"`
 	Book       Book
-	CardID     uint `gorm:"not null"`
+	CardID     string `gorm:"not null"`
 	Card       Card
 	BorrowDate time.Time `gorm:"not null"`
 	ReturnDate time.Time

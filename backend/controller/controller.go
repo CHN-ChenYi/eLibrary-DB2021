@@ -28,14 +28,17 @@ func addRoutes(app *fiber.App) {
 	api := app.Group("/api")
 
 	book := api.Group("/book")
-	book.Post("", addBook);
-	book.Put("", modifyBook);
-	book.Get("/all", getBookAll);
-	book.Get("/category", getBookBySomething("category", model.QueryBookByCategory));
-	book.Get("/title", getBookBySomething("title", model.QueryBookByTitle));
-	book.Get("/press", getBookBySomething("press", model.QueryBookByPress));
-	book.Get("/author", getBookBySomething("author", model.QueryBookByAuthor));
-	book.Get("/year", getBookByYear);
-	book.Get("/price", getBookByPrice);
+	book.Post("", addBook)
+	book.Put("", modifyBook)
+	book.Get("/all", getBookAll)
+	book.Get("/category", getBookBySomething("category", model.QueryBookByCategory))
+	book.Get("/title", getBookBySomething("title", model.QueryBookByTitle))
+	book.Get("/press", getBookBySomething("press", model.QueryBookByPress))
+	book.Get("/author", getBookBySomething("author", model.QueryBookByAuthor))
+	book.Get("/year", getBookByYear)
+	book.Get("/price", getBookByPrice)
 
+	card := api.Group("/card")
+	card.Post("", addCard)
+	card.Delete("", deleteCard)
 }
