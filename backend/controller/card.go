@@ -22,7 +22,7 @@ func validateCard(card *model.Card) []*errorResponse {
 	return errors
 }
 
-func addCard(c *fiber.Ctx) error {
+func modifyCardTemplate(c *fiber.Ctx, modifyCard func(*model.Card) error) error {
 	card := new(model.Card)
 
 	if err := c.BodyParser(card); err != nil {
@@ -37,13 +37,21 @@ func addCard(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := model.CreateCard(card); err != nil {
+	if err := modifyCard(card); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"data": err.Error(),
 		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": "SUCCESS"})
+}
+
+func addCard(c *fiber.Ctx) error {
+	return modifyCardTemplate(c, model.CreateCard)
+}
+
+func modifyCard(c *fiber.Ctx) error {
+	return modifyCardTemplate(c, model.ModifyCard)
 }
 
 func deleteCard(c *fiber.Ctx) error {

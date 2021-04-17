@@ -24,7 +24,7 @@ func validateBook(book *model.Book) []*errorResponse {
 	return errors
 }
 
-func addBook(c *fiber.Ctx) error {
+func modifyBookTemplate(c *fiber.Ctx, modifyBook func(*model.Book) error) error {
 	book := new(model.Book)
 
 	if err := c.BodyParser(book); err != nil {
@@ -39,7 +39,7 @@ func addBook(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := model.CreateBook(book); err != nil {
+	if err := modifyBook(book); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"data": err.Error(),
 		})
@@ -48,28 +48,12 @@ func addBook(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": "SUCCESS"})
 }
 
+func addBook(c *fiber.Ctx) error {
+	return modifyBookTemplate(c, model.CreateBook)
+}
+
 func modifyBook(c *fiber.Ctx) error {
-	book := new(model.Book)
-
-	if err := c.BodyParser(book); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"data": err.Error(),
-		})
-	}
-
-	if err := validateBook(book); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"data": err,
-		})
-	}
-
-	if err := model.ModifyBook(book); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"data": err.Error(),
-		})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": "SUCCESS"})
+	return modifyBookTemplate(c, model.ModifyBook)
 }
 
 func getBookAll(c *fiber.Ctx) error {

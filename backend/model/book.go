@@ -49,6 +49,10 @@ func QueryBookAll() ([]Book, error) {
 	return queryBook("SELECT * FROM books")
 }
 
+func QueryBookByBookID(bookID string) ([]Book, error) {
+	return queryBook("SELECT * FROM books WHERE book_id = ?", bookID)
+}
+
 func QueryBookByCategory(category string) ([]Book, error) {
 	return queryBook("SELECT * FROM books WHERE category = ?", category)
 }

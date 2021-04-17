@@ -1,6 +1,8 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Card struct {
 	CardID     string `gorm:"primaryKey;size:15;not null" json:"card_id" validate:"required"`
@@ -10,9 +12,19 @@ type Card struct {
 }
 
 func CreateCard(card *Card) error {
-	result := gormDb.Exec(`INSERT INTO cards(card_id, department, type, deleted) VALUES (?, ?, ?, ?)`,
-		card.CardID, card.Department, card.Type, card.Deleted)
+	result := gormDb.Exec(`INSERT INTO cards(card_id, department, type, deleted) VALUES (?, ?, ?, ?)`, card.CardID, card.Department, card.Type, card.Deleted)
 	return result.Error
+}
+
+func ModifyCard(card *Card) error {
+	result := gormDb.Exec(`UPDATE cards SET department = ?, type = ? WHERE card_id = ? AND deleted = 0`, card.Department, card.Type, card.CardID)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return ErrNoRowsAffected
+	}
+	return nil
 }
 
 func DeleteCard(cardID string) error {
@@ -28,7 +40,7 @@ func DeleteCard(cardID string) error {
 
 func ValidateCard(cardID string) (bool, error) {
 	var card Card
-	rows, err := gormDb.Raw("SELECT * FROM cards WHERE card_id = ?").Rows()
+	rows, err := gormDb.Raw("SELECT * FROM cards WHERE card_id = ?", cardID).Rows()
 	if err != nil {
 		return false, err
 	}

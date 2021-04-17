@@ -40,5 +40,12 @@ func addRoutes(app *fiber.App) {
 
 	card := api.Group("/card")
 	card.Post("", addCard)
+	card.Put("", modifyCard)
 	card.Delete("", deleteCard)
+
+	borrow := api.Group("/borrow")
+	borrow.Use(validateCardID)
+	borrow.Get("/book/all", getBorrowWithoutReturnDateAll)
+	borrow.Post("/book", borrowBook)
+	borrow.Delete("/book", returnBook)
 }
