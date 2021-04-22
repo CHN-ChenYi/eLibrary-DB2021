@@ -12,6 +12,17 @@ type Book struct {
 	Stock    uint    `gorm:"not null;check:stock<=total" validate:"required"`
 }
 
+type BookSearch struct {
+	Category        string  `json:"category"`
+	Title           string  `json:"title"`
+	Press           string  `json:"press"`
+	YearLowerbound  int     `json:"yearLowerbound"`
+	YearUpperbound  int     `json:"yearUpperbound"`
+	Author          string  `json:"author"`
+	PriceLowerbound float32 `json:"priceLowerbound"`
+	PriceUpperbound float32 `json:"priceUpperbound"`
+}
+
 func CreateBook(book *Book) error {
 	result := gormDb.Exec(`INSERT INTO books(book_id, category, title, press, year, author, price, total, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		book.BookID, book.Category, book.Title, book.Press, book.Year, book.Author, book.Price, book.Total, book.Stock)
@@ -45,34 +56,14 @@ func queryBook(sql string, values ...interface{}) ([]Book, error) {
 	return ret, err
 }
 
+func QueryBook(queryString string) ([]Book, error) {
+	return queryBook("SELECT * FROM books WHERE " + queryString)
+}
+
 func QueryBookAll() ([]Book, error) {
 	return queryBook("SELECT * FROM books")
 }
 
 func QueryBookByBookID(bookID string) ([]Book, error) {
 	return queryBook("SELECT * FROM books WHERE book_id = ?", bookID)
-}
-
-func QueryBookByCategory(category string) ([]Book, error) {
-	return queryBook("SELECT * FROM books WHERE category = ?", category)
-}
-
-func QueryBookByTitle(title string) ([]Book, error) {
-	return queryBook("SELECT * FROM books WHERE title = ?", title)
-}
-
-func QueryBookByPress(press string) ([]Book, error) {
-	return queryBook("SELECT * FROM books WHERE press = ?", press)
-}
-
-func QueryBookByYear(l, r int) ([]Book, error) {
-	return queryBook("SELECT * FROM books WHERE ? <= year and year <= ?", l, r)
-}
-
-func QueryBookByAuthor(author string) ([]Book, error) {
-	return queryBook("SELECT * FROM books WHERE author = ?", author)
-}
-
-func QueryBookByPrice(l, r float32) ([]Book, error) {
-	return queryBook("SELECT * FROM books WHERE ? <= price and price <= ?", l, r)
 }

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/CHN-ChenYi/eLibrary-DB2021/model"
@@ -68,60 +69,71 @@ func getBookAll(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": books})
 }
 
-func getBookBySomething(field string, QueryBookBySomething func(string) ([]model.Book, error)) (func(c *fiber.Ctx) error) {
-	return func(c *fiber.Ctx) error {
-		something := c.Query(field)
-		if something == "" {
+func appendQueryString(lhs *string, rhs string) {
+	if len(*lhs) == 0 {
+		*lhs = rhs
+	} else {
+		*lhs = *lhs + " AND " + rhs
+	}
+}
+
+// TODO(TO/GA): prevent XSS
+func searchBook(c *fiber.Ctx) error {
+	var queryString string
+
+	if category := c.Query("category"); category != "" {
+		appendQueryString(&queryString, fmt.Sprintf("category = '%v'", category))
+	}
+
+	if title := c.Query("title"); title != "" {
+		appendQueryString(&queryString, fmt.Sprintf("title = '%v'", title))
+	}
+
+	if press := c.Query("press"); press != "" {
+		appendQueryString(&queryString, fmt.Sprintf("press = '%v'", press))
+	}
+
+	if author := c.Query("author"); author != "" {
+		appendQueryString(&queryString, fmt.Sprintf("author = '%v'", author))
+	}
+
+	year_l_str := c.Query("year_lowerbound")
+	year_r_str := c.Query("year_upperbound")
+	if year_l_str != "" || year_r_str != "" {
+		if year_l_str == "" || year_r_str == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"data": field + " can't be empty",
+				"data": "year_lowerbound and year_upperbound should submit together",
 			})
 		}
-		books, err := QueryBookBySomething(something)
-
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"data": err.Error(),
+		year_l, l_err := strconv.Atoi(year_l_str)
+		year_r, r_err := strconv.Atoi(year_r_str)
+		if l_err != nil || r_err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"data": "couldn't parse range",
 			})
 		}
-
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": books})
-	}
-}
-
-func getBookByYear(c *fiber.Ctx) error {
-	l_str := c.Query("l")
-	r_str := c.Query("r")
-	l, l_err := strconv.Atoi(l_str)
-	r, r_err := strconv.Atoi(r_str)
-	if l_err != nil || r_err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"data": "couldn't parse range",
-		})
-	}
-	books, err := model.QueryBookByYear(l, r)
-
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"data": err.Error(),
-		})
+		appendQueryString(&queryString, fmt.Sprintf("%v <= year AND year <= %v", year_l, year_r))
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": books})
-}
-
-func getBookByPrice(c *fiber.Ctx) error {
-	l_str := c.Query("l")
-	r_str := c.Query("r")
-	l_double, l_err := strconv.ParseFloat(l_str, 32)
-	r_double, r_err := strconv.ParseFloat(r_str, 32)
-	if l_err != nil || r_err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"data": "couldn't parse range",
-		})
+	price_l_str := c.Query("price_lowerbound")
+	price_r_str := c.Query("price_upperbound")
+	if price_l_str != "" || price_r_str != "" {
+		if price_l_str == "" || price_r_str == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"data": "price_lowerbound and price_upperbound should submit together",
+			})
+		}
+		price_l, l_err := strconv.ParseFloat(price_l_str, 32)
+		price_r, r_err := strconv.ParseFloat(price_r_str, 32)
+		if l_err != nil || r_err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"data": "couldn't parse range",
+			})
+		}
+		appendQueryString(&queryString, fmt.Sprintf("%v <= price AND price <= %v", price_l, price_r))
 	}
-	l := float32(l_double)
-	r := float32(r_double)
-	books, err := model.QueryBookByPrice(l, r)
+
+	books, err := model.QueryBook(queryString)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
