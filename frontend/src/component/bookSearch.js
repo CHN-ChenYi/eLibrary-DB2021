@@ -3,15 +3,7 @@ import { Form, Row, Col, Input, InputNumber, Button } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
 import { success, error } from '../utils/alert';
 import BookTable from './bookTable';
-
-const layout = {
-  labelCol: {
-    span: 12,
-  },
-  wrapperCol: {
-    span: 12,
-  },
-};
+import { layout, tailLayout } from './formLayout';
 
 const BookSearch = () => {
   const [form] = Form.useForm();
@@ -61,18 +53,17 @@ const BookSearch = () => {
       if (i > 3) {
         children.push(
           <Col key={i}>
-            <Form.Item
-              label={`${name[i]}`}>
+            <Form.Item label={`${label[i]}`}>
               <Input.Group compact>
-                <Form.Item name={`${name[i]}_lowerbound`} >
-                  <Input
-                    style={{ width: 100, textAlign: 'center' }}
+                <div style={{ width: '45%' }}><Form.Item span={7} name={`${name[i]}_lowerbound`} >
+                  <InputNumber
+                    style={{ width: '100%', textAlign: 'center' }}
                     placeholder="Minimum"
                   />
-                </Form.Item>
+                </Form.Item></div>
                 <Input
                   style={{
-                    width: 30,
+                    width: '10%',
                     borderLeft: 0,
                     borderRight: 0,
                     pointerEvents: 'none',
@@ -80,20 +71,19 @@ const BookSearch = () => {
                   placeholder="~"
                   disabled
                 />
-                <Form.Item name={`${name[i]}_upperbound`} >
-                  <Input
-                    style={{ width: 100, textAlign: 'center' }}
+                <div style={{ width: '45%' }}><Form.Item span={7} name={`${name[i]}_upperbound`} >
+                  <InputNumber
+                    style={{ width: '100%', textAlign: 'center' }}
                     placeholder="Maximum"
                   />
-                </Form.Item>
+                </Form.Item></div>
               </Input.Group>
             </Form.Item>
-            {/* <InputNumber style={{ width: '100%' }} /> */}
           </Col>,
         );
       } else {
         children.push(
-          <Col key={i}>
+          <Col span={24} key={i}>
             <Form.Item
               name={`${name[i]}`}
               label={`${label[i]}`}
@@ -120,8 +110,9 @@ const BookSearch = () => {
     >
       <Row gutter={24}>{getFields()}</Row>
       <Row>
+        <Col span={6}></Col>
         <Col
-          span={24}
+          span={12}
           style={{
             textAlign: 'right',
           }}
