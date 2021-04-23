@@ -20,7 +20,7 @@ async function uniFetch(url, options) {
       try {
         // try to get error data
         const { data } = await response.json();
-        errMsg = { errMsg: data };
+        errMsg = data;
       } catch (e) {
         // on error, do thing and fallback to normal route
       }
