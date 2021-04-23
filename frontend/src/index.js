@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import Content from './content';
+import Content from './component/content';
 
-import { Menu } from 'antd';
+import { PageHeader, Menu } from 'antd';
 import { BookOutlined, TeamOutlined, UserSwitchOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
@@ -23,6 +23,11 @@ class App extends React.Component {
     const { current } = this.state;
     return (
       <>
+        <PageHeader
+          className="site-page-header"
+          title="图书管理系统"
+          subTitle="eLibrary-DB2021"
+        />
         <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
           <SubMenu key="Book" icon={<BookOutlined />} title="Book">
             <Menu.Item key="book:1">List</Menu.Item>

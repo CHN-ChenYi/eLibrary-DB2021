@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Table } from 'antd';
-import { uniFetch } from './apiUtils';
+import { uniFetch } from '../utils/apiUtils';
 
 const columns = [
   {
@@ -50,7 +51,7 @@ const columns = [
   },
 ];
 
-function BookList() {
+const BookList = () => {
   let [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
@@ -69,16 +70,4 @@ function BookList() {
   return (<Table dataSource={dataSource} columns={columns} />);
 }
 
-class Content extends React.Component {
-  render() {
-    if (this.props.page === "book:1")
-      return (<BookList />);
-    return (
-      <p>
-        {this.props.page}
-      </p>
-    );
-  }
-}
-
-export default Content;
+export default BookList;
