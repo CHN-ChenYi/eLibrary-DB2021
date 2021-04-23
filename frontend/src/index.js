@@ -30,10 +30,9 @@ class App extends React.Component {
         />
         <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
           <SubMenu key="Book" icon={<BookOutlined />} title="Book">
-            <Menu.Item key="book:1">List</Menu.Item>
-            <Menu.Item key="book:2">Search</Menu.Item>
-            <Menu.Item key="book:3">Add</Menu.Item>
-            <Menu.Item key="book:4">Modify</Menu.Item>
+            <Menu.Item key="book:1">Search</Menu.Item>
+            <Menu.Item key="book:2">Add</Menu.Item>
+            <Menu.Item key="book:3">Modify</Menu.Item>
           </SubMenu>
           <SubMenu key="Card" icon={<TeamOutlined />} title="Card">
             <Menu.Item key="card:1">Add</Menu.Item>

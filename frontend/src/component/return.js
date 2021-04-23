@@ -6,9 +6,9 @@ import { Form, Input, Button } from 'antd';
 const { Search } = Input;
 
 const Return = () => {
-  let [dataSource, setDataSource] = useState([]);
-  let [cardID, setCardID] = useState();
-  let [searchCnt, setSearchCnt] = useState(0);
+  const [dataSource, setDataSource] = useState([]);
+  const [cardID, setCardID] = useState();
+  const [searchCnt, setSearchCnt] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
