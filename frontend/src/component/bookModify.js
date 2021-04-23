@@ -35,13 +35,23 @@ const BookModify = () => {
     const children = [];
 
     for (let i = 0; i < count; i++) {
-      if (i > 4) {
+      if (i === 0) {
+        children.push(
+          <Form.Item
+            name={`${name[i]}`}
+            label={`${label[i]}`}
+            rules={[{ required: true, message: '请输入书号!' }]}
+          >
+            <Input />
+          </Form.Item>
+        );
+      } else if (i > 4) {
         children.push(
           <Form.Item
             name={`${name[i]}`}
             label={`${label[i]}`}
           >
-            <InputNumber style={{ width: '100%' }}/>
+            <InputNumber style={{ width: '100%' }} />
           </Form.Item >
         );
       } else {

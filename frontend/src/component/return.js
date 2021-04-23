@@ -39,14 +39,14 @@ const Return = () => {
   };
 
   return (<>
-    <Form><Form.Item label="借书证号">
-      <Search placeholder="借书证号" allowClear onSearch={onSearch} enterButton />
+    <Form><Form.Item label="借书证号" >
+      <Search allowClear onSearch={onSearch} enterButton />
     </Form.Item></Form>
     <BookTable dataSource={dataSource} />
     <div style={{ padding: "20px 0 0 0" }}>
       <Form onFinish={onReturn}>
-        <Form.Item label="书号" name="bookID">
-          <Input type="text" placeholder="书号" />
+        <Form.Item label="书号" name="bookID" rules={[{ required: true, message: '请输入书号!' }]}>
+          <Input type="text" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">

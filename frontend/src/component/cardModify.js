@@ -38,7 +38,17 @@ const CardModify = () => {
     const children = [];
 
     for (let i = 0; i < count; i++) {
-      if (i > 1) {
+      if (i === 0) {
+        children.push(
+          <Form.Item
+            name={`${name[i]}`}
+            label={`${label[i]}`}
+            rules={[{ required: true, message: '请输入借书证号!' }]}
+          >
+            <Input />
+          </Form.Item>
+        );
+      } else if (i > 1) {
         children.push(
           <Form.Item
             name={`${name[i]}`}
