@@ -17,17 +17,26 @@ const BookSearch = () => {
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState([]);
   const [constrain, setConstrain] = useState({});
-  const label = ["分类", "标题", "出版社", "作者", "出版时间（下界）", "出版时间（上界）", "价格（下界）", "价格（上界）"];
-  const name = ['category', 'title', 'press', 'author', 'year_lowerbound', 'year_upperbound', 'price_lowerbound', 'price_upperbound'];
+  const label = ["分类", "标题", "出版社", "作者", "出版时间", "价格"];
+  const name = ['category', 'title', 'press', 'author', 'year', 'price'];
   const count = name.length;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(constrain);
         let query = "";
+        const appendQuery = (index) => {
+          if (constrain[index] !== undefined && constrain[index] !== null)
+            query += `&${index}=${constrain[index]}`;
+        };
         for (let i = 0; i < count; i++) {
-          if (constrain[name[i]] !== undefined && constrain[name[i]] !== null)
-            query += `&${name[i]}=${constrain[name[i]]}`;
+          if (i > 3) {
+            appendQuery(`${name[i]}_lowerbound`);
+            appendQuery(`${name[i]}_upperbound`);
+          } else {
+            appendQuery(`${name[i]}`);
+          }
         }
         let result;
         if (query.length === 0)
@@ -35,7 +44,7 @@ const BookSearch = () => {
         else
           result = await uniFetch(`/book/search?` + query.substring(1));
         setDataSource(result);
-        success("查询成功")
+        success("查询成功");
       } catch (e) {
         setDataSource([]);
         error(e);
@@ -53,11 +62,33 @@ const BookSearch = () => {
         children.push(
           <Col key={i}>
             <Form.Item
-              name={`${name[i]}`}
-              label={`${label[i]}`}
-            >
-              <InputNumber style={{ width: '100%' }} />
+              label={`${name[i]}`}>
+              <Input.Group compact>
+                <Form.Item name={`${name[i]}_lowerbound`} >
+                  <Input
+                    style={{ width: 100, textAlign: 'center' }}
+                    placeholder="Minimum"
+                  />
+                </Form.Item>
+                <Input
+                  style={{
+                    width: 30,
+                    borderLeft: 0,
+                    borderRight: 0,
+                    pointerEvents: 'none',
+                  }}
+                  placeholder="~"
+                  disabled
+                />
+                <Form.Item name={`${name[i]}_upperbound`} >
+                  <Input
+                    style={{ width: 100, textAlign: 'center' }}
+                    placeholder="Maximum"
+                  />
+                </Form.Item>
+              </Input.Group>
             </Form.Item>
+            {/* <InputNumber style={{ width: '100%' }} /> */}
           </Col>,
         );
       } else {
