@@ -57,6 +57,30 @@ func modifyBook(c *fiber.Ctx) error {
 	return modifyBookTemplate(c, model.ModifyBook)
 }
 
+func getBook(c *fiber.Ctx) error {
+	bookID := c.Query("book_id")
+	if bookID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"data": "book_id can't be empty",
+		})
+	}
+	books, err := model.QueryBookByBookID(bookID)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"data": err.Error(),
+		})
+	}
+
+	if len(books) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"data": "can't find such book",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": books[0]})
+}
+
 func getBookAll(c *fiber.Ctx) error {
 	books, err := model.QueryBookAll()
 

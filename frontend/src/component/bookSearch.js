@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Row, Col, Input, Button } from 'antd';
+import { Form, Row, Col, Input, InputNumber, Button } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
 import BookTable from './bookTable';
 
@@ -7,8 +7,8 @@ const BookSearch = () => {
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState([]);
   const [constrain, setConstrain] = useState({});
-  const label = ["分类", "标题", "出版社", "作者", "出版时间（上界）", "出版时间（下界）", "价格（上界）", "价格（下界）"];
-  const name = ['category', 'title', 'press', 'author', 'year_upperbound', 'year_lowerbound', 'price_upperbound', 'price_lowerbound'];
+  const label = ["分类", "标题", "出版社", "作者", "出版时间（下界）", "出版时间（上界）", "价格（下界）", "价格（上界）"];
+  const name = ['category', 'title', 'press', 'author', 'year_lowerbound', 'year_upperbound', 'price_lowerbound', 'price_upperbound'];
   const count = name.length;
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const BookSearch = () => {
       try {
         let query = "";
         for (let i = 0; i < count; i++) {
-          if (constrain[name[i]] !== undefined)
+          if (constrain[name[i]] !== undefined && constrain[name[i]] !== null)
             query += `&${name[i]}=${constrain[name[i]]}`;
         }
         let result;
@@ -31,22 +31,36 @@ const BookSearch = () => {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [constrain]);
 
   const getFields = () => {
     const children = [];
 
     for (let i = 0; i < count; i++) {
-      children.push(
-        <Col span={6} key={i}>
-          <Form.Item
-            name={`${name[i]}`}
-            label={`${label[i]}`}
-          >
-            <Input />
-          </Form.Item>
-        </Col>,
-      );
+      if (i > 3) {
+        children.push(
+          <Col span={6} key={i}>
+            <Form.Item
+              name={`${name[i]}`}
+              label={`${label[i]}`}
+            >
+              <InputNumber />
+            </Form.Item>
+          </Col>,
+        );
+      } else {
+        children.push(
+          <Col span={6} key={i}>
+            <Form.Item
+              name={`${name[i]}`}
+              label={`${label[i]}`}
+            >
+              <Input />
+            </Form.Item>
+          </Col>,
+        );
+      }
     }
 
     return children;

@@ -34,6 +34,7 @@ func addRoutes(app *fiber.App) {
 	book := api.Group("/book")
 	book.Post("", addBook)
 	book.Put("", modifyBook)
+	book.Get("", getBook)
 	book.Get("/all", getBookAll)
 	book.Get("/search", searchBook);
 
