@@ -51,7 +51,7 @@ const columns = [
 
 class BookTable extends React.Component {
   render() {
-    return (<Table dataSource={this.props.dataSource} columns={columns} />);
+    return (<Table dataSource={this.props.dataSource} columns={columns}  pagination={{ pageSize: 5 }}/>);
   }
 };
 

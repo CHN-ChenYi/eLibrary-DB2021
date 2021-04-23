@@ -3,6 +3,15 @@ import { Form, Row, Col, Input, InputNumber, Button } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
 import BookTable from './bookTable';
 
+const layout = {
+  labelCol: {
+    span: 12,
+  },
+  wrapperCol: {
+    span: 12,
+  },
+};
+
 const BookSearch = () => {
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState([]);
@@ -40,18 +49,18 @@ const BookSearch = () => {
     for (let i = 0; i < count; i++) {
       if (i > 3) {
         children.push(
-          <Col span={6} key={i}>
+          <Col key={i}>
             <Form.Item
               name={`${name[i]}`}
               label={`${label[i]}`}
             >
-              <InputNumber />
+              <InputNumber style={{ width: '100%' }} />
             </Form.Item>
           </Col>,
         );
       } else {
         children.push(
-          <Col span={6} key={i}>
+          <Col key={i}>
             <Form.Item
               name={`${name[i]}`}
               label={`${label[i]}`}
@@ -70,6 +79,7 @@ const BookSearch = () => {
 
   return (<>
     <Form
+      {...layout}
       form={form}
       name="advanced_search"
       className="ant-advanced-search-form"
