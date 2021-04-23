@@ -39,6 +39,7 @@ func addRoutes(app *fiber.App) {
 	book.Get("/search", searchBook);
 
 	card := api.Group("/card")
+	card.Get("", getCard)
 	card.Post("", addCard)
 	card.Put("", modifyCard)
 	card.Delete("", deleteCard)

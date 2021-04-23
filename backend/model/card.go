@@ -51,3 +51,18 @@ func ValidateCard(cardID string) (bool, error) {
 	}
 	return false, gorm.ErrRecordNotFound
 }
+
+func QueryCardByCardID(cardID string) ([]Card, error) {
+	ret := make([]Card, 0)
+	var card Card
+	rows, err := gormDb.Raw("SELECT * FROM cards WHERE card_id = ?", cardID).Rows()
+	if err != nil {
+		return ret, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		gormDb.ScanRows(rows, &card)
+		ret = append(ret, card)
+	}
+	return ret, err
+}

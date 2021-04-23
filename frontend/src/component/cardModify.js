@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Button, Radio } from 'antd';
+import { Form, Input, Button, Radio } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
 
-const BookModify = () => {
+const CardModify = () => {
   const [form] = Form.useForm();
-  const [book, setBook] = useState({});
+  const [card, setCard] = useState({});
 
   useEffect(() => {
-    form.setFieldsValue(book);
+    form.setFieldsValue(card);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [book]);
+  }, [card]);
 
   const onFinish = async (values) => {
     try {
       if (values.operation === 'Get') {
-        const result = await uniFetch(`/book?book_id=${values.book_id}`);
-        setBook(result);
+        const result = await uniFetch(`/card?card_id=${values.card_id}`);
+        setCard(result);
         alert('查询成功');
+      } else if (values.operation === 'Delete') {
+        await uniFetch(`/card?card_id=${values.card_id}`, { method: 'Delete' });
+        alert('删除成功');
       } else {
-        await uniFetch(`/book`, { method: values.operation, body: values });
+        await uniFetch(`/card`, { method: values.operation, body: values });
         alert(values.operation === 'Post' ? '新建成功' : '修改成功');
       }
     } catch (e) {
@@ -26,21 +29,24 @@ const BookModify = () => {
     }
   };
 
-  const label = ["书号", "分类", "标题", "出版社", "作者", "出版时间", "价格", "总数", "在架数"];
-  const name = ['book_id', 'category', 'title', 'press', 'author', 'year', 'price', 'total', 'stock'];
+  const label = ["借书证号", "部门", "类型"];
+  const name = ['card_id', 'department', 'type'];
   const count = name.length;
 
   const getFields = () => {
     const children = [];
 
     for (let i = 0; i < count; i++) {
-      if (i > 4) {
+      if (i > 1) {
         children.push(
           <Form.Item
             name={`${name[i]}`}
             label={`${label[i]}`}
           >
-            <InputNumber />
+            <Radio.Group>
+              <Radio.Button value="S">学生</Radio.Button>
+              <Radio.Button value="T">教师</Radio.Button>
+            </Radio.Group>
           </Form.Item>
         );
       } else {
@@ -66,6 +72,7 @@ const BookModify = () => {
           <Radio.Button value="Get">查询</Radio.Button>
           <Radio.Button value="Post">新建</Radio.Button>
           <Radio.Button value="Put">修改</Radio.Button>
+          <Radio.Button value="Delete">删除</Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Form.Item>
@@ -77,4 +84,4 @@ const BookModify = () => {
   );
 };
 
-export default BookModify;
+export default CardModify;

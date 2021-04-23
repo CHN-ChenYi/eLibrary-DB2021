@@ -33,11 +33,7 @@ class App extends React.Component {
             <Menu.Item key="book:1">Search</Menu.Item>
             <Menu.Item key="book:2">Modify</Menu.Item>
           </SubMenu>
-          <SubMenu key="Card" icon={<TeamOutlined />} title="Card">
-            <Menu.Item key="card:1">Add</Menu.Item>
-            <Menu.Item key="card:2">Modify</Menu.Item>
-            <Menu.Item key="card:3">Delete</Menu.Item>
-          </SubMenu>
+          <Menu.Item key="Card" icon={<TeamOutlined />}>Card</Menu.Item>
           <SubMenu key="Borrow" icon={<UserSwitchOutlined />} title="Return/Borrow">
             <Menu.Item key="borrow:1">Return</Menu.Item>
             <Menu.Item key="borrow:2">Borrow</Menu.Item>

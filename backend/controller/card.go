@@ -46,6 +46,30 @@ func modifyCardTemplate(c *fiber.Ctx, modifyCard func(*model.Card) error) error 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": "SUCCESS"})
 }
 
+func getCard(c *fiber.Ctx) error {
+	cardID := c.Query("card_id")
+	if cardID == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"data": "card_id can't be empty",
+		})
+	}
+	cards, err := model.QueryCardByCardID(cardID)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"data": err.Error(),
+		})
+	}
+
+	if len(cards) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"data": "can't find such card",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"data": cards[0]})
+}
+
 func addCard(c *fiber.Ctx) error {
 	return modifyCardTemplate(c, model.CreateCard)
 }
