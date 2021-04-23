@@ -43,16 +43,18 @@ const Return = () => {
       <Search placeholder="借书证号" allowClear onSearch={onSearch} enterButton />
     </Form.Item></Form>
     <BookTable dataSource={dataSource} />
-    <Form onFinish={onReturn}>
-      <Form.Item label="书号" name="bookID">
-        <Input type="text" placeholder="书号" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          还书
+    <div style={{ padding: "20px 0 0 0" }}>
+      <Form onFinish={onReturn}>
+        <Form.Item label="书号" name="bookID">
+          <Input type="text" placeholder="书号" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            还书
         </Button>
-      </Form.Item>
-    </Form>
+        </Form.Item>
+      </Form>
+    </div>
   </>);
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { uniFetch } from '../utils/apiUtils';
 import { Form, Input, Button } from 'antd';
+import { layout, tailLayout } from './formLayout';
 
 const Borrow = () => {
   const onFinish = async (values) => {
@@ -14,6 +15,7 @@ const Borrow = () => {
 
   return (
     <Form
+      {...layout}
       name="basic"
       onFinish={onFinish}
     >
@@ -33,7 +35,7 @@ const Borrow = () => {
         <Input />
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
           借书
         </Button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, InputNumber, Button, Radio } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
+import { layout, tailLayout } from './formLayout';
 
 const BookModify = () => {
   const [form] = Form.useForm();
@@ -40,8 +41,8 @@ const BookModify = () => {
             name={`${name[i]}`}
             label={`${label[i]}`}
           >
-            <InputNumber />
-          </Form.Item>
+            <InputNumber style={{ width: '100%' }}/>
+          </Form.Item >
         );
       } else {
         children.push(
@@ -59,7 +60,7 @@ const BookModify = () => {
   };
 
   return (
-    <Form form={form} onFinish={onFinish}>
+    <Form {...layout} form={form} onFinish={onFinish}>
       {getFields()}
       <Form.Item label="操作" name="operation">
         <Radio.Group>
@@ -68,7 +69,7 @@ const BookModify = () => {
           <Radio.Button value="Put">修改</Radio.Button>
         </Radio.Group>
       </Form.Item>
-      <Form.Item>
+      <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
           提交
         </Button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Radio } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
+import { layout, tailLayout } from './formLayout';
 
 const CardModify = () => {
   const [form] = Form.useForm();
@@ -65,7 +66,7 @@ const CardModify = () => {
   };
 
   return (
-    <Form form={form} onFinish={onFinish}>
+    <Form {...layout} form={form} onFinish={onFinish}>
       {getFields()}
       <Form.Item label="操作" name="operation">
         <Radio.Group>
@@ -75,7 +76,7 @@ const CardModify = () => {
           <Radio.Button value="Delete">删除</Radio.Button>
         </Radio.Group>
       </Form.Item>
-      <Form.Item>
+      <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
           提交
         </Button>

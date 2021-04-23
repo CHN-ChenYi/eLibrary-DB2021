@@ -100,7 +100,9 @@ const BookSearch = () => {
         </Col>
       </Row>
     </Form>
-    <BookTable dataSource={dataSource} />
+    <div style={{ padding: "10px 0 0 0" }}>
+      <BookTable dataSource={dataSource} />
+    </div>
   </>);
 };
 

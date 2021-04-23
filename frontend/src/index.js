@@ -39,7 +39,9 @@ class App extends React.Component {
             <Menu.Item key="borrow:2">Borrow</Menu.Item>
           </SubMenu>
         </Menu>
-        <Content page={current} />
+        <div style={{ padding: "20px 20px 20px 20px" }}>
+          <Content page={current} />
+        </div>
       </>
     );
   }
