@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { uniFetch } from '../utils/apiUtils';
 import BookTable from './bookTable';
-import { Input, Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 
 const { Search } = Input;
 
 const Return = () => {
   let [dataSource, setDataSource] = useState([]);
   let [cardID, setCardID] = useState();
-  let [bookID, setBookID] = useState();
   let [searchCnt, setSearchCnt] = useState(0);
 
   useEffect(() => {
@@ -30,11 +29,9 @@ const Return = () => {
 
   const onSearch = value => setCardID(value);
 
-  const onChange = value => { setBookID(value.target.value); };
-
-  const onReturn = async () => {
+  const onReturn = async (value) => {
     try {
-      await uniFetch(`/borrow/book?card_id=${cardID}&book_id=${bookID}`, { method: 'Delete' });
+      await uniFetch(`/borrow/book?card_id=${cardID}&book_id=${value.bookID}`, { method: 'Delete' });
       setSearchCnt(searchCnt + 1);
     } catch (e) {
       alert(e);
@@ -42,14 +39,20 @@ const Return = () => {
   };
 
   return (<>
-    <Search placeholder="借书证号" allowClear onSearch={onSearch} enterButton />
+    <Form><Form.Item label="借书证号">
+      <Search placeholder="借书证号" allowClear onSearch={onSearch} enterButton />
+    </Form.Item></Form>
     <BookTable dataSource={dataSource} />
-    <span>
-      <Input type="text" placeholder="书号" onChange={onChange} />
-      <Button type="primary" htmlType="submit" onClick={onReturn}>
-        还书
-      </Button>
-    </span>
+    <Form onFinish={onReturn}>
+      <Form.Item label="书号" name="bookID">
+        <Input type="text" placeholder="书号" />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          还书
+        </Button>
+      </Form.Item>
+    </Form>
   </>);
 };
 

@@ -36,7 +36,7 @@ const Borrow = () => {
       <Form.Item>
         <Button type="primary" htmlType="submit">
           借书
-    </Button>
+        </Button>
       </Form.Item>
     </Form>);
 };
