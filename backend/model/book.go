@@ -9,7 +9,7 @@ type Book struct {
 	Author   string  `gorm:"size:15;not null" json:"author" validate:"required"`
 	Price    float32 `gorm:"type:decimal(7,2);not null" json:"price" validate:"required"`
 	Total    uint    `gorm:"not null" json:"total" validate:"required"`
-	Stock    uint    `gorm:"not null;check:stock<=total" validate:"required"`
+	Stock    uint    `gorm:"not null;check:stock<=total" json:"stock" validate:"required"`
 }
 
 type BookSearch struct {

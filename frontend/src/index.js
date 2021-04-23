@@ -1,68 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+
+import Content from './content';
+
+import { Menu } from 'antd';
+import { BookOutlined, TeamOutlined, UserSwitchOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
 
-ReactDOM.render(
-  <Layout>
-    <Header className="header">
-      <div className="logo" />
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-        <Menu.Item key="1">nav 1</Menu.Item>
-        <Menu.Item key="2">nav 2</Menu.Item>
-        <Menu.Item key="3">nav 3</Menu.Item>
-      </Menu>
-    </Header>
-    <Layout>
-      <Sider width={200} className="site-layout-background">
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
-          style={{ height: '100%', borderRight: 0 }}
-        >
-          <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-            <Menu.Item key="1">option1</Menu.Item>
-            <Menu.Item key="2">option2</Menu.Item>
-            <Menu.Item key="3">option3</Menu.Item>
-            <Menu.Item key="4">option4</Menu.Item>
+class App extends React.Component {
+  state = {
+    current: 'book:1'
+  };
+
+  handleClick = e => {
+    console.log('click ', e);
+    this.setState({ current: e.key });
+  };
+
+  render() {
+    const { current } = this.state;
+    return (
+      <>
+        <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
+          <SubMenu key="Book" icon={<BookOutlined />} title="Book">
+            <Menu.Item key="book:1">List</Menu.Item>
+            <Menu.Item key="book:2">Search</Menu.Item>
+            <Menu.Item key="book:3">Add</Menu.Item>
+            <Menu.Item key="book:4">Modify</Menu.Item>
           </SubMenu>
-          <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-            <Menu.Item key="5">option5</Menu.Item>
-            <Menu.Item key="6">option6</Menu.Item>
-            <Menu.Item key="7">option7</Menu.Item>
-            <Menu.Item key="8">option8</Menu.Item>
+          <SubMenu key="Card" icon={<TeamOutlined />} title="Card">
+            <Menu.Item key="card:1">Add</Menu.Item>
+            <Menu.Item key="card:2">Modify</Menu.Item>
+            <Menu.Item key="card:3">Delete</Menu.Item>
           </SubMenu>
-          <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-            <Menu.Item key="9">option9</Menu.Item>
-            <Menu.Item key="10">option10</Menu.Item>
-            <Menu.Item key="11">option11</Menu.Item>
-            <Menu.Item key="12">option12</Menu.Item>
+          <SubMenu key="Borrow" icon={<UserSwitchOutlined />} title="Borrow">
+            <Menu.Item key="borrow:1">List</Menu.Item>
+            <Menu.Item key="borrow:2">Borrow</Menu.Item>
+            <Menu.Item key="borrow:3">Return</Menu.Item>
           </SubMenu>
         </Menu>
-      </Sider>
-      <Layout style={{ padding: '0 24px 24px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
-        <Content
-          className="site-layout-background"
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-          }}
-        >
-          Content
-        </Content>
-      </Layout>
-    </Layout>
-  </Layout>,
-  document.getElementById('root'),
-);
+        <Content page={current} />
+      </>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));

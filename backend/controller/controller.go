@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -18,13 +19,17 @@ func Init() {
 	addRoutes(app)
 
 	port := viper.GetString("app.port")
-	app.Listen(":" + port)
+	err := app.Listen(":" + port)
+	if err != nil {
+		logrus.Panic(err)
+	}
 
 	logrus.Info("Echo framework initialized")
 }
 
 func addRoutes(app *fiber.App) {
 	api := app.Group("/api")
+	api.Use(cors.New())
 
 	book := api.Group("/book")
 	book.Post("", addBook)

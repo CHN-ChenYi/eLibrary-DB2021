@@ -6,4 +6,4 @@ sql:
   port: 3306
   db_name: eLibrary
 app:
-  port: 3000
+  port: 3001
