@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Row, Col, Input, InputNumber, Button } from 'antd';
+import { Space, Form, Input, InputNumber, Button } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
 import { success, error } from '../utils/alert';
 import BookTable from './bookTable';
@@ -52,10 +52,13 @@ const BookSearch = () => {
     for (let i = 0; i < count; i++) {
       if (i > 3) {
         children.push(
-          <Col key={i}>
-            <Form.Item label={`${label[i]}`}>
+          <Space direction="horizontal" >
+            <Form.Item {...layout}
+              label={`${label[i]}`}
+              style={{ margin: "0 0 0 0" }}
+            >
               <Input.Group compact>
-                <div style={{ width: '45%' }}><Form.Item span={7} name={`${name[i]}_lowerbound`} >
+                <div style={{ width: '45%' }}><Form.Item name={`${name[i]}_lowerbound`} >
                   <InputNumber
                     style={{ width: '100%', textAlign: 'center' }}
                     placeholder="Minimum"
@@ -67,11 +70,12 @@ const BookSearch = () => {
                     borderLeft: 0,
                     borderRight: 0,
                     pointerEvents: 'none',
+                    textAlign: 'center',
                   }}
                   placeholder="~"
                   disabled
                 />
-                <div style={{ width: '45%' }}><Form.Item span={7} name={`${name[i]}_upperbound`} >
+                <div style={{ width: '45%' }}><Form.Item name={`${name[i]}_upperbound`} >
                   <InputNumber
                     style={{ width: '100%', textAlign: 'center' }}
                     placeholder="Maximum"
@@ -79,18 +83,16 @@ const BookSearch = () => {
                 </Form.Item></div>
               </Input.Group>
             </Form.Item>
-          </Col>,
+          </Space>,
         );
       } else {
         children.push(
-          <Col span={24} key={i}>
-            <Form.Item
-              name={`${name[i]}`}
-              label={`${label[i]}`}
-            >
-              <Input />
-            </Form.Item>
-          </Col>,
+          <Form.Item {...layout}
+            name={`${name[i]}`}
+            label={`${label[i]}`}
+          >
+            <Input />
+          </Form.Item>,
         );
       }
     }
@@ -100,44 +102,35 @@ const BookSearch = () => {
 
   const onFinish = values => setConstrain(values);
 
-  return (<>
+  return (<Space direction="vertical">
     <Form
-      {...layout}
       form={form}
       name="advanced_search"
       className="ant-advanced-search-form"
       onFinish={onFinish}
     >
-      <Row gutter={24}>{getFields()}</Row>
-      <Row>
-        <Col span={6}></Col>
-        <Col
-          span={12}
-          style={{
-            textAlign: 'right',
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Search
-          </Button>
-          <Button
-            style={{
-              margin: '0 8px',
-            }}
-            onClick={() => {
-              form.resetFields();
-              setConstrain({});
-            }}
-          >
-            Clear
-          </Button>
-        </Col>
-      </Row>
+      {getFields()}
     </Form>
+    <Space direction="horizontal">
+      <Button type="primary" htmlType="submit">
+        Search
+          </Button>
+      <Button
+        style={{
+          margin: '0 8px',
+        }}
+        onClick={() => {
+          form.resetFields();
+          setConstrain({});
+        }}
+      >
+        Clear
+          </Button>
+    </Space>
     <div style={{ padding: "10px 0 0 0" }}>
       <BookTable dataSource={dataSource} />
     </div>
-  </>);
+  </Space>);
 };
 
 export default BookSearch;

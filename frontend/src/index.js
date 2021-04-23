@@ -14,6 +14,10 @@ class App extends React.Component {
     current: 'book:1'
   };
 
+  componentDidMount = () => {
+    document.title = "图书管理系统";
+  }
+
   handleClick = e => {
     console.log('click ', e);
     this.setState({ current: e.key });
