@@ -40,10 +40,9 @@ class App extends React.Component {
             <Menu.Item key="card:2">Modify</Menu.Item>
             <Menu.Item key="card:3">Delete</Menu.Item>
           </SubMenu>
-          <SubMenu key="Borrow" icon={<UserSwitchOutlined />} title="Borrow">
-            <Menu.Item key="borrow:1">List</Menu.Item>
+          <SubMenu key="Borrow" icon={<UserSwitchOutlined />} title="Return/Borrow">
+            <Menu.Item key="borrow:1">Return</Menu.Item>
             <Menu.Item key="borrow:2">Borrow</Menu.Item>
-            <Menu.Item key="borrow:3">Return</Menu.Item>
           </SubMenu>
         </Menu>
         <Content page={current} />

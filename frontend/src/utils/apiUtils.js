@@ -15,15 +15,12 @@ async function uniFetch(url, options) {
   // request completed but response code not 200
   if (!response.ok) {
     let errMsg = null;
-    if (response.status >= 400 && response.status < 500) {
-      // if starting with 4, try to parse error message
-      try {
-        // try to get error data
-        const { data } = await response.json();
-        errMsg = data;
-      } catch (e) {
-        // on error, do thing and fallback to normal route
-      }
+    try {
+      // try to get error data
+      const { data } = await response.json();
+      errMsg = data;
+    } catch (e) {
+      // on error, do thing and fallback to normal route
     }
     if (errMsg) throw errMsg;
   }
