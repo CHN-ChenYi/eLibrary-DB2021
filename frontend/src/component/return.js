@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { uniFetch } from '../utils/apiUtils';
+import { success, error } from '../utils/alert';
 import BookTable from './bookTable';
 import { Form, Input, Button } from 'antd';
 
@@ -18,9 +19,10 @@ const Return = () => {
         try {
           const result = await uniFetch(`/borrow/book/all?card_id=${cardID}`);
           setDataSource(result);
+          success("查询成功")
         } catch (e) {
           setDataSource([]);
-          alert(e);
+          error(e);
         }
       }
     };
@@ -33,8 +35,9 @@ const Return = () => {
     try {
       await uniFetch(`/borrow/book?card_id=${cardID}&book_id=${value.bookID}`, { method: 'Delete' });
       setSearchCnt(searchCnt + 1);
+      success("还书成功")
     } catch (e) {
-      alert(e);
+      error(e);
     }
   };
 

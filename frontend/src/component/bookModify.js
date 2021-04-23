@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, InputNumber, Button, Radio } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
+import { success, error } from '../utils/alert'
 import { layout, tailLayout } from './formLayout';
 
 const BookModify = () => {
@@ -17,13 +18,13 @@ const BookModify = () => {
       if (values.operation === 'Get') {
         const result = await uniFetch(`/book?book_id=${values.book_id}`);
         setBook(result);
-        alert('查询成功');
+        success('查询成功');
       } else {
         await uniFetch(`/book`, { method: values.operation, body: values });
-        alert(values.operation === 'Post' ? '新建成功' : '修改成功');
+        success(values.operation === 'Post' ? '新建成功' : '修改成功');
       }
     } catch (e) {
-      alert(e);
+      error(e);
     }
   };
 

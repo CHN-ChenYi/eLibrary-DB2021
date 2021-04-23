@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Radio } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
+import { success, error } from '../utils/alert';
 import { layout, tailLayout } from './formLayout';
 
 const CardModify = () => {
@@ -17,16 +18,16 @@ const CardModify = () => {
       if (values.operation === 'Get') {
         const result = await uniFetch(`/card?card_id=${values.card_id}`);
         setCard(result);
-        alert('查询成功');
+        success('查询成功');
       } else if (values.operation === 'Delete') {
         await uniFetch(`/card?card_id=${values.card_id}`, { method: 'Delete' });
-        alert('删除成功');
+        success('删除成功');
       } else {
         await uniFetch(`/card`, { method: values.operation, body: values });
-        alert(values.operation === 'Post' ? '新建成功' : '修改成功');
+        success(values.operation === 'Post' ? '新建成功' : '修改成功');
       }
     } catch (e) {
-      alert(e);
+      error(e);
     }
   };
 

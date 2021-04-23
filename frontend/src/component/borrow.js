@@ -1,5 +1,6 @@
 import React from 'react';
 import { uniFetch } from '../utils/apiUtils';
+import { success, error } from '../utils/alert';
 import { Form, Input, Button } from 'antd';
 import { layout, tailLayout } from './formLayout';
 
@@ -7,9 +8,9 @@ const Borrow = () => {
   const onFinish = async (values) => {
     try {
       await uniFetch(`/borrow/book?card_id=${values.cardID}&book_id=${values.bookID}`, { method: 'Post' });
-      alert("借书成功");
+      success("借书成功");
     } catch (e) {
-      alert(e);
+      error(e);
     }
   };
 

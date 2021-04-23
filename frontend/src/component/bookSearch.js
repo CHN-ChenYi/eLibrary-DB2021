@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Row, Col, Input, InputNumber, Button } from 'antd';
 import { uniFetch } from '../utils/apiUtils';
+import { success, error } from '../utils/alert';
 import BookTable from './bookTable';
 
 const layout = {
@@ -34,9 +35,10 @@ const BookSearch = () => {
         else
           result = await uniFetch(`/book/search?` + query.substring(1));
         setDataSource(result);
+        success("查询成功")
       } catch (e) {
         setDataSource([]);
-        alert(e);
+        error(e);
       }
     };
     fetchData();
