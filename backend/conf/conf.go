@@ -18,7 +18,7 @@ func Init() {
 
 	var confItems = map[string][]string{
 		"sql": {"user", "password", "protocol", "host", "port", "db_name"},
-		"app": {"port"},
+		"app": {"port", "cors"},
 	}
 
 	for k, v := range confItems {

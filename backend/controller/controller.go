@@ -29,14 +29,16 @@ func Init() {
 
 func addRoutes(app *fiber.App) {
 	api := app.Group("/api")
-	api.Use(cors.New())
+	if viper.GetBool("app.cors") {
+		api.Use(cors.New())
+	}
 
 	book := api.Group("/book")
 	book.Post("", addBook)
 	book.Put("", modifyBook)
 	book.Get("", getBook)
 	book.Get("/all", getBookAll)
-	book.Get("/search", searchBook);
+	book.Get("/search", searchBook)
 
 	card := api.Group("/card")
 	card.Get("", getCard)
