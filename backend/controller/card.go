@@ -85,7 +85,20 @@ func deleteCard(c *fiber.Ctx) error {
 			"data": "card_id can't be empty",
 		})
 	}
-	err := model.DeleteCard(cardID)
+
+	books, err := model.QueryBorrowWithoutReturnDateAll(cardID)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"data": err.Error(),
+		})
+	}
+	if len(books) != 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"data": "hasn't returned all the books",
+		})
+	}
+
+	err = model.DeleteCard(cardID)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
