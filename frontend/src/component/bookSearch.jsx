@@ -18,7 +18,7 @@ const BookSearch = () => {
       try {
         let query = "";
         const appendQuery = (index) => {
-          if (constrain[index] !== undefined && constrain[index] !== null)
+          if (constrain[index] !== undefined && constrain[index] !== null && constrain[index] !== "")
             query += `&${index}=${constrain[index]}`;
         };
         for (let i = 0; i < count; i++) {
@@ -101,21 +101,22 @@ const BookSearch = () => {
     return children;
   };
 
-  const onFinish = values => setConstrain(values);
-
   return (<>
     <Space direction="vertical">
       <Form
         form={form}
         name="advanced_search"
         className="ant-advanced-search-form"
-        onFinish={onFinish}
       >
         {getFields()}
       </Form>
       <div style={{ width: "50%", marginLeft: "250px" }}>
         <Space direction="horizontal">
-          <Button type="primary" htmlType="submit" style={{ width: '80px' }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ width: '80px' }}
+            onClick={() => setConstrain(form.getFieldsValue())}>
             Search
           </Button>
           <Button
