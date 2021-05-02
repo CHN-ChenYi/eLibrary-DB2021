@@ -16,7 +16,6 @@ const BookSearch = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(constrain);
         let query = "";
         const appendQuery = (index) => {
           if (constrain[index] !== undefined && constrain[index] !== null)
